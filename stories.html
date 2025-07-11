@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SheCode - Share Your Story</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Share Your Story 💬</h1>
+    <a href="report.html">
+  <button>🛡️ Report Harassment</button>
+</a>
+
+
+    <p>Your voice matters. This will be posted anonymously.</p>
+    
+    <nav>
+      <a href="../index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="storyForm" onsubmit="submitStory(event)">
+      <label for="storyTitle">Story Title:</label><br>
+      <input type="text" id="storyTitle" name="storyTitle" required><br><br>
+
+      <label for="storyText">Your Story:</label><br>
+      <textarea id="storyText" name="storyText" rows="6" required></textarea><br><br>
+
+      <button type="submit">Submit Anonymously</button>
+    </form>
+    <hr><h2>Stories Shared by Women 💖</h2>
+<div id="storyList"></div>
+
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <!-- Firebase Config -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDj4oahhx0ML4LEO0TOMYUr1OSDpDnRe3g",
+      authDomain: "shecode-312af.firebaseapp.com",
+      projectId: "shecode-312af",
+      storageBucket: "shecode-312af.firebasestorage.app",
+      messagingSenderId: "759275865156",
+      appId: "1:759275865156:web:c7b97110094222088ce811"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
+  <!-- Submit Logic -->
+  <script>
+    document.getElementById("storyForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById("storyTitle").value.trim();
+      const story = document.getElementById("storyText").value.trim();
+
+      if (!title || !story) {
+        alert("Please fill in both fields.");
+        return;
+      }
+
+      db.collection("stories").add({
+        title: title,
+        story: story,
+        timestamp: new Date()
+      }).then(() => {
+        alert("✨ Your story was submitted anonymously!");
+        document.getElementById("storyForm").reset();
+      }).catch((error) => {
+        console.error("Error submitting story: ", error);
+        alert("❌ Something went wrong. Try again later.");
+      });
+      // Show all stories from Firestore
+function loadStories() {
+  db.collection("stories")
+    .orderBy("timestamp", "desc")
+    .get()
+    .then((querySnapshot) => {
+      const storyList = document.getElementById("storyList");
+      storyList.innerHTML = ""; // Clear old content
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const card = document.createElement("div");
+        card.style = "background:#ffe6f2;padding:15px;margin-bottom:15px;border-radius:10px;box-shadow:0 0 8px rgba(0,0,0,0.1);";
+
+        card.innerHTML = `
+          <h3>${data.title}</h3>
+          <p>${data.story}</p>
+          <small><i>${new Date(data.timestamp.toDate()).toLocaleString()}</i></small>
+        `;
+        storyList.appendChild(card);
+      });
+    })
+    .catch((error) => {
+      console.error("Error loading stories: ", error);
+    });
+}
+
+// Call the function once page loads
+window.onload = loadStories;
+
+    });
+  </script>
+  <script src="script.js" type="module"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDj4oahhx0ML4LEO0TOMYUr1OSDpDnRe3g",
+    authDomain: "shecode-312af.firebaseapp.com",
+    projectId: "shecode-312af",
+    storageBucket: "shecode-312af.firebasestorage.app",
+    messagingSenderId: "759275865156",
+    appId: "1:759275865156:web:c7b97110094222088ce811"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 💌 Submit story function
+  async function submitStory(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const story = document.getElementById("story").value;
+
+    try {
+      await addDoc(collection(db, "stories"), {
+        title,
+        story,
+        timestamp: new Date()
+      });
+
+      alert("Story submitted successfully!");
+      document.getElementById("storyForm").reset();
+      loadStories();
+    } catch (error) {
+      console.error("Error adding story:", error);
+    }
+  }
+
+  // 🧠 Load all stories
+  async function loadStories() {
+    const storyList = document.getElementById("storyList");
+    storyList.innerHTML = "";
+
+    const q = query(collection(db, "stories"), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      const card = document.createElement("div");
+      card.style = "background:#ffe6f2;padding:15px;margin-bottom:15px;border-radius:10px;box-shadow:0 0 8px rgba(0,0,0,0.1);";
+
+      card.innerHTML = `
+        <h3>${data.title}</h3>
+        <p>${data.story}</p>
+        <small><i>${data.timestamp.toDate().toLocaleString()}</i></small>
+      `;
+
+      storyList.appendChild(card);
+    });
+  }
+
+  // Load stories when page loads
+  window.addEventListener("DOMContentLoaded", loadStories);
+  // Attach form handler
+  window.submitStory = submitStory;
+</script>
+</body>
+</html>

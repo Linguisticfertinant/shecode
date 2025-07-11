@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SheCode - Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to SheCode</h1>
+    <p>A safe space for women in tech 💖</p>
+    <nav>
+      <a href="pages/stories.html">Stories</a> |
+      <a href="pages/report.html">Report</a> |
+      <a href="pages/privacy.html">privacy</a>
+      <section class="quote-section">
+  <blockquote>
+    “I was afraid to speak up. But this space gave me the strength to be heard.”
+  </blockquote>
+  <p class="quote-credit">— Anonymous SheCode Member</p>
+</section>
+<section class="mission">
+  <h2>🌐 What is SheCode?</h2>
+  <p>SheCode is a safe digital space for women in tech to anonymously share their stories, report harassment, and access support.</p>
+  <p>No logins. No judgments. Just a platform that listens.</p>
+</section>
+<img src="https://illustrations.popsy.co/tech/woman-crying.png" alt="Silent struggle" width="250" style="margin: 20px auto; display: block; border-radius: 20px;">
+<img src="https://illustrations.popsy.co/tech/woman-power.png" alt="Rising strong" width="250" style="margin: 20px auto; display: block; border-radius: 20px;">
+
+    </nav>
+  </header>
+<!-- Firebase SDK v8 -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDj4oahhx0ML4LEO0TOMYUr1OSDpDnRe3g",
+    authDomain: "shecode-312af.firebaseapp.com",
+    projectId: "shecode-312af",
+    storageBucket: "shecode-312af.firebasestorage.app",
+    messagingSenderId: "759275865156",
+    appId: "1:759275865156:web:c7b97110094222088ce811"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Firestore DB instance
+  const db = firebase.firestore();
+</script>
+
+<!-- Load your script AFTER Firebase is ready -->
+<script src="script.js"></script>
+
+</body>
+</html>
