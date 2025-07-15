@@ -1,5 +1,7 @@
 # SheCode
 
+[🌐 Visit the official website](http://shecommunity.netlify.app)
+
 A safe, anonymous platform for sharing stories and reporting harassment, designed to empower users to speak their truth while protecting their privacy.
 
 ---
